@@ -9,7 +9,7 @@ function [solution,i_profiles]=solver_ECE(ReactionParameters,ElectricalParameter
    [u0(i),derivitive2(i)]=pdeval(0,x,solution(i,:,3),0);
     end
 %Faraday current
-i_profiles=Const.Faraday*Const.DiffusionCo*(derivitive+derivitive2);
+i_profiles=-Const.Faraday*Const.DiffusionCo*(ReactionParameters.n1*derivitive+ReactionParameters.n2*derivitive2);
    function [c,f,s] = pdex4pde(x,t,u,DuDx)
    c = ones(4,1);
    f = Const.DiffusionCo*ones(4,1).*DuDx;
@@ -24,7 +24,7 @@ i_profiles=Const.Faraday*Const.DiffusionCo*(derivitive+derivitive2);
  % over potential
  eta1=PotentialGeneration(Ctrl,ElectricalParameters,t)-ReactionParameters.E1_V;
  eta2=PotentialGeneration(Ctrl,ElectricalParameters,t)-ReactionParameters.E2_V;
-  pl = [ReactionParameters.k1*(ul(1)*exp(Const.Faraday*.5*eta1/(Const.R*Const.Temperature))-ul(2)*exp(-Const.Faraday*.5*eta1/(Const.R*Const.Temperature)));ReactionParameters.k1*(ul(1)*exp(Const.Faraday*.5*eta1/(Const.R*Const.Temperature))-ul(2)*exp(-Const.Faraday*.5*eta1/(Const.R*Const.Temperature)));ReactionParameters.k2*(ul(3)*exp(Const.Faraday*.5*eta2/(Const.R*Const.Temperature))-ul(4)*exp(-Const.Faraday*.5*eta2/(Const.R*Const.Temperature)));ReactionParameters.k2*(ul(3)*exp(Const.Faraday*.5*eta2/(Const.R*Const.Temperature))-ul(4)*exp(-Const.Faraday*.5*eta2/(Const.R*Const.Temperature)))]; 
+  pl = [ReactionParameters.k1*(ul(1)*exp(ReactionParameters.n1*Const.Faraday*.5*eta1/(Const.R*Const.Temperature))-ul(2)*exp(-ReactionParameters.n1*Const.Faraday*.5*eta1/(Const.R*Const.Temperature)));ReactionParameters.k1*(ul(1)*exp(ReactionParameters.n1*Const.Faraday*.5*eta1/(Const.R*Const.Temperature))-ul(2)*exp(-ReactionParameters.n1*Const.Faraday*.5*eta1/(Const.R*Const.Temperature)));ReactionParameters.k2*(ul(3)*exp(ReactionParameters.n2*Const.Faraday*.5*eta2/(Const.R*Const.Temperature))-ul(4)*exp(-ReactionParameters.n2*Const.Faraday*.5*eta2/(Const.R*Const.Temperature)));ReactionParameters.k2*(ul(3)*exp(ReactionParameters.n2*Const.Faraday*.5*eta2/(Const.R*Const.Temperature))-ul(4)*exp(-ReactionParameters.n2*Const.Faraday*.5*eta2/(Const.R*Const.Temperature)))]; 
   ql = [-1;1; -1;1]; 
   pr=[0;0;0;0];
   qr=[1;1;1;1];

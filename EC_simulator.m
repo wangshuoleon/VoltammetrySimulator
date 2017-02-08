@@ -22,7 +22,7 @@ function varargout = EC_simulator(varargin)
 
 % Edit the above text to modify the response to help EC_simulator
 
-% Last Modified by GUIDE v2.5 29-Nov-2016 16:44:48
+% Last Modified by GUIDE v2.5 02-Feb-2017 13:28:24
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -101,7 +101,7 @@ load('E.mat');
                  TableData{2,3}='m^2/s';
                  set(handles.const_table,'data',TableData);
        axes(handles.axes2);
-       plot(data.t,data.i_profiles)
+       plottime(data.t,data.i_profiles)
        xlabel('Time s');
        ylabel('Current Density A/m^2')
        handles.data=data;
@@ -138,15 +138,15 @@ val=get(hObject,'Value');
 
 switch str{val}
     case 't vs i'
-        plot(handles.data.t,handles.data.i_profiles);
+        plottime(handles.data.t,handles.data.i_profiles);
         xlabel('Time s');
         ylabel('Current Density A/m^2')
     case 'potential vs i'
-        plot(handles.data.potential,handles.data.i_profiles);
+        reverse_plot(handles.data.potential,handles.data.i_profiles);
         xlabel('Potential V');
        ylabel('Current Density A/m^2')
     case 't vs potential'
-        plot(handles.data.t,handles.data.potential)
+        plottime(handles.data.t,handles.data.potential)
              xlabel('Time s');
              ylabel('Potential V')
     
@@ -245,7 +245,7 @@ else
                        set(handles.sr_checkbox,'value',0)
                end
        axes(handles.axes2);
-       plot(data.t,data.i_profiles)
+       plottime(data.t,data.i_profiles)
        xlabel('Time s');
        ylabel('Current Density A/m^2')
        handles.data=data;
@@ -279,47 +279,50 @@ function run_Callback(hObject, eventdata, handles)
 % hObject    handle to run (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+try
 if strcmp(handles.data.Ctrl.SurfaceReaction,'off')
 
-set(handles.figure1, 'pointer', 'watch')
-drawnow;
-% your computation
-tic
-[ handles.data.x,handles.data.t] = meshing(handles.data.ElectricalParameters, handles.data.Ctrl,handles.data.Const);
-[ handles.data.potential ] = PotentialGeneration( handles.data.Ctrl ,handles.data.ElectricalParameters,handles.data.t);
-[handles.data.solution,handles.data.i_profiles]=solver(handles.data.ReactionParameters,handles.data.ElectricalParameters,handles.data.Ctrl,handles.data.Const,handles.data.x,handles.data.t,handles.data.potential);
-elapsedtime=toc;
-set(handles.text1,'string',['Computation Time',num2str(elapsedtime)]);
-set(handles.figure1, 'pointer', 'arrow');
-axes(handles.axes2);
-plot(handles.data.t,handles.data.i_profiles)
-xlabel('Time s');
-ylabel('Current Density A/m^2')
-set(handles.popupmenu1,'Enable','on')
-set(handles.export,'Enable','on')
+ set(handles.figure1, 'pointer', 'watch')
+ drawnow;
+ % your computation
+    tic
+    [ handles.data.x,handles.data.t] = meshing(handles.data.ElectricalParameters, handles.data.Ctrl,handles.data.Const);
+    [ handles.data.potential ] = PotentialGeneration( handles.data.Ctrl ,handles.data.ElectricalParameters,handles.data.t);
+    [handles.data.solution,handles.data.i_profiles]=solver(handles.data.ReactionParameters,handles.data.ElectricalParameters,handles.data.Ctrl,handles.data.Const,handles.data.x,handles.data.t,handles.data.potential);
+    elapsedtime=toc;
+    set(handles.text1,'string',['Computation Time',num2str(elapsedtime)]);
+    set(handles.figure1, 'pointer', 'arrow');
+    axes(handles.axes2);
+    plottime(handles.data.t,handles.data.i_profiles)
+    xlabel('Time s');
+    ylabel('Current Density A/m^2')
+    set(handles.popupmenu1,'Enable','on')
+    set(handles.export,'Enable','on')
 else
-%     handles.data.Const.DiffusionCo=1e12;
-set(handles.figure1, 'pointer', 'watch')
-drawnow;
-tic
-[ handles.data.x,handles.data.t] = meshing(handles.data.ElectricalParameters, handles.data.Ctrl,handles.data.Const);
-[ handles.data.potential ] = PotentialGeneration( handles.data.Ctrl ,handles.data.ElectricalParameters,handles.data.t);
-handles.data.x=linspace(0,1,10);
-handles.data.Const.DiffusionCo=1e12;
-[handles.data.solution,handles.data.i_profiles]=solver(handles.data.ReactionParameters,handles.data.ElectricalParameters,handles.data.Ctrl,handles.data.Const,handles.data.x,handles.data.t,handles.data.potential);
-elapsedtime=toc;
-ConstTable=get(handles.const_table,'data');
-handles.data.Const.DiffusionCo=ConstTable{2,2};
-set(handles.text1,'string',['Computation Time',num2str(elapsedtime)]);
-set(handles.figure1, 'pointer', 'arrow');
-axes(handles.axes2);
-plot(handles.data.t,handles.data.i_profiles)
-xlabel('Time s');
-ylabel('Current Density A/m^2')
-set(handles.popupmenu1,'Enable','on')
-set(handles.export,'Enable','on')
+    %     handles.data.Const.DiffusionCo=1e12;
+    set(handles.figure1, 'pointer', 'watch')
+    drawnow;
+    tic
+    [ handles.data.x,handles.data.t] = meshing(handles.data.ElectricalParameters, handles.data.Ctrl,handles.data.Const);
+    [ handles.data.potential ] = PotentialGeneration( handles.data.Ctrl ,handles.data.ElectricalParameters,handles.data.t);
+    handles.data.x=linspace(0,1,10);
+    handles.data.Const.DiffusionCo=1e12;
+    [handles.data.solution,handles.data.i_profiles]=solver(handles.data.ReactionParameters,handles.data.ElectricalParameters,handles.data.Ctrl,handles.data.Const,handles.data.x,handles.data.t,handles.data.potential);
+    elapsedtime=toc;
+    ConstTable=get(handles.const_table,'data');
+    handles.data.Const.DiffusionCo=ConstTable{2,2};
+    set(handles.text1,'string',['Computation Time',num2str(elapsedtime)]);
+    set(handles.figure1, 'pointer', 'arrow');
+    axes(handles.axes2);
+    plottime(handles.data.t,handles.data.i_profiles)
+    xlabel('Time s');
+    ylabel('Current Density A/m^2')
+    set(handles.popupmenu1,'Enable','on')
+    set(handles.export,'Enable','on')
 end
-
+catch 
+    set(handles.text1,'String','Error, the solver does not converge, please try to decrese the potential range')
+end
 guidata(hObject,handles);
 
 
@@ -371,7 +374,7 @@ fields=fieldnames(handles.data.ElectricalParameters);
      [ handles.data.x,handles.data.t] = meshing(handles.data.ElectricalParameters, handles.data.Ctrl,handles.data.Const);
      [ handles.data.potential ] = PotentialGeneration( handles.data.Ctrl ,handles.data.ElectricalParameters,handles.data.t);
      axes(handles.axes2)
-     plot(handles.data.t,handles.data.potential)
+     plottime(handles.data.t,handles.data.potential)
      xlabel('Time s');
      ylabel('Potential V')
      set(handles.popupmenu1,'Enable','off')
@@ -429,7 +432,7 @@ handles.data.Ctrl.Tech='CV';
 [ handles.data.x,handles.data.t] = meshing(handles.data.ElectricalParameters, handles.data.Ctrl,handles.data.Const);
      [ handles.data.potential ] = PotentialGeneration( handles.data.Ctrl ,handles.data.ElectricalParameters,handles.data.t);
      axes(handles.axes2)
-     plot(handles.data.t,handles.data.potential)
+     plottime(handles.data.t,handles.data.potential)
      xlabel('Time s');
      ylabel('Potential V')
 guidata(hObject,handles);
@@ -454,7 +457,7 @@ handles.data.Ctrl.Tech='CA';
 [ handles.data.x,handles.data.t] = meshing(handles.data.ElectricalParameters, handles.data.Ctrl,handles.data.Const);
      [ handles.data.potential ] = PotentialGeneration( handles.data.Ctrl ,handles.data.ElectricalParameters,handles.data.t);
      axes(handles.axes2)
-     plot(handles.data.t,handles.data.potential)
+     plottime(handles.data.t,handles.data.potential)
      xlabel('Time s');
      ylabel('Potential V')
 guidata(hObject,handles);
@@ -625,7 +628,7 @@ function select_files_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 [Openfilename, Openpathname, filterindex] = uigetfile( ...
   '*.csv', ...
-   'Select the plot data', ...
+   'Select the reverse_plot data', ...
    'MultiSelect', 'on');
 if Openpathname==0
 else
@@ -638,7 +641,7 @@ else
      for i=1:length(Openfilename)
          Openfname=fullfile(Openpathname,Openfilename{i});
          data=csvread(Openfname);
-         plot(data(:,1),data(:,2))
+         reverse_plot(data(:,1),data(:,2))
      end
      legend(Openfilename)
      hold off
@@ -662,3 +665,116 @@ TableData=get(handles.const_table,'data');
 handles.data.Const.Temperature=TableData{1,2};
 handles.data.Const.DiffusionCo=TableData{2,2};
 guidata(hObject,handles);
+
+
+% --------------------------------------------------------------------
+function analysis_Callback(hObject, eventdata, handles)
+% hObject    handle to analysis (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function about_Callback(hObject, eventdata, handles)
+% hObject    handle to about (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+about;
+
+
+% --------------------------------------------------------------------
+function pf_Callback(hObject, eventdata, handles)
+% hObject    handle to pf (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+  if strcmp(handles.data.Ctrl.Tech,'CV') && get(handles.popupmenu1,'value')==2 && get(handles. sr_checkbox,'value')==0
+      [ ip,Ep,locs ] = EC_findpeaks( handles.data.i_profiles, handles.data.t ,handles.data.potential,handles.data.ElectricalParameters);
+       
+       axes(handles.axes2);
+       hold on
+       for i=1:length(ip)
+       plot(Ep(i),handles.data.i_profiles(locs(i)),'o')
+       str=['Ip= ',num2str(ip(i)),',Ep=',num2str(Ep(i))];
+       text(Ep(i)+.02,handles.data.i_profiles(locs(i)),strjoin(str))
+       end
+       hold off
+  else
+      set(handles.text1,'String','Peak finding not available')
+  end
+      
+    
+
+
+
+% --------------------------------------------------------------------
+function help_Callback(hObject, eventdata, handles)
+% hObject    handle to help (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function Untitled_6_Callback(hObject, eventdata, handles)
+% hObject    handle to Untitled_6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function fitting_Callback(hObject, eventdata, handles)
+% hObject    handle to fitting (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function import_cv_Callback(hObject, eventdata, handles)
+% hObject    handle to import_cv (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[Openfilename, Openpathname, filterindex] = uigetfile( ...
+  '*.csv', ...
+   'Select the reverse_plot data', ...
+   'MultiSelect', 'off');
+if Openpathname==0
+else
+   
+    axes(handles.axes3);
+   
+  
+     
+   
+         Openfname=fullfile(Openpathname,Openfilename);
+         data=csvread(Openfname);
+         reverse_plot(data(:,1),data(:,2),'o')
+         set(handles.axes3,'XAxisLocation','top')
+         set(handles.axes3,'YAxisLocation','right')
+         set(handles.axes3,'visible','on')
+         set(handles.axes3,'Color','none')
+     
+     
+end
+
+
+% --------------------------------------------------------------------
+function clear_axes_Callback(hObject, eventdata, handles)
+% hObject    handle to clear_axes (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+cla(handles.axes3)
+set(handles.axes3,'visible','off')
+
+
+% --- Executes during object creation, after setting all properties.
+function figure1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to figure1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+
+% --- Executes on button press in pushbutton2.
+function pushbutton2_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+keyboard;

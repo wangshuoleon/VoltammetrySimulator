@@ -8,7 +8,7 @@ function [solution,i_profiles]=solver_E(ReactionParameters,ElectricalParameters,
    [u0(i) ,derivitive(i)]=pdeval(0,x,solution(i,:,1),0);
     end
 %Faraday current
-i_profiles=Const.Faraday*Const.DiffusionCo*derivitive;
+i_profiles=-ReactionParameters.n*Const.Faraday*Const.DiffusionCo*derivitive;
    function [c,f,s] = pdex4pde(x,t,u,DuDx)
    c = ones(2,1);
    f = Const.DiffusionCo*ones(2,1).*DuDx;
@@ -22,7 +22,7 @@ i_profiles=Const.Faraday*Const.DiffusionCo*derivitive;
 % constants and variables
  % over potential
  eta=PotentialGeneration(Ctrl,ElectricalParameters,t)-ReactionParameters.E0_V;
-  pl = ones(2,1)*ReactionParameters.k0_MeterPerSec*(ul(1)*exp(Const.Faraday*.5*eta/(Const.R*Const.Temperature))-ul(2)*exp(-Const.Faraday*.5*eta/(Const.R*Const.Temperature))); 
+  pl = ones(2,1)*ReactionParameters.k0_MeterPerSec*(ul(1)*exp(ReactionParameters.n*Const.Faraday*.5*eta/(Const.R*Const.Temperature))-ul(2)*exp(-ReactionParameters.n*Const.Faraday*.5*eta/(Const.R*Const.Temperature))); 
   ql = [-1; 1]; 
   pr=[0;0];
   qr=[1;1];
