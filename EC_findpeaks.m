@@ -9,7 +9,7 @@ segment_length=length(t)/(ElectricalParameters.NumberOfScans*2);
 % create the direction vector
 direction_vector=zeros(1,length(t));
 for segment =1 :2*ElectricalParameters.NumberOfScans
-    direction_vector((segment-1)*segment_length+1:segment*segment_length)=ones(segment_length,1)*direction^segment;
+    direction_vector((segment-1)*segment_length+1:segment*segment_length)=ones(segment_length,1)*direction*sign_function(segment);
 end
 
 % prepare the i profiles for peak finding
