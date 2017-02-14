@@ -4,7 +4,6 @@ function  plottime( varargin )
 
     plot(varargin{1},varargin{2});
 
-    set(gca,'color','none')
 
 end
 

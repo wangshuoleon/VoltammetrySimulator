@@ -22,7 +22,7 @@ function varargout = EC_simulator(varargin)
 
 % Edit the above text to modify the response to help EC_simulator
 
-% Last Modified by GUIDE v2.5 02-Feb-2017 13:28:24
+% Last Modified by GUIDE v2.5 13-Feb-2017 11:42:26
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -142,7 +142,7 @@ switch str{val}
         xlabel('Time s');
         ylabel('Current Density A/m^2')
     case 'potential vs i'
-        reverse_plot(handles.data.potential,handles.data.i_profiles);
+        overlap_cv(handles.data);
         xlabel('Potential V');
        ylabel('Current Density A/m^2')
     case 't vs potential'
@@ -732,25 +732,20 @@ function import_cv_Callback(hObject, eventdata, handles)
 % hObject    handle to import_cv (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
 [Openfilename, Openpathname, filterindex] = uigetfile( ...
   '*.csv', ...
    'Select the reverse_plot data', ...
    'MultiSelect', 'off');
 if Openpathname==0
 else
-   
-    axes(handles.axes3);
-   
-  
-     
-   
-         Openfname=fullfile(Openpathname,Openfilename);
-         data=csvread(Openfname);
-         reverse_plot(data(:,1),data(:,2),'o')
-         set(handles.axes3,'XAxisLocation','top')
-         set(handles.axes3,'YAxisLocation','right')
-         set(handles.axes3,'visible','on')
-         set(handles.axes3,'Color','none')
+    handles.data.Ctrl.Fitting=1;
+    Openfname=fullfile(Openpathname,Openfilename);
+    EXdata=csvread(Openfname);
+    handles.data.ExperimentalData=EXdata;
+    axes(handles.axes2);
+    reverse_plot(handles.data.ExperimentalData(:,1),handles.data.ExperimentalData(:,2),'o')
+    guidata(hObject,handles);    
      
      
 end
@@ -761,8 +756,9 @@ function clear_axes_Callback(hObject, eventdata, handles)
 % hObject    handle to clear_axes (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-cla(handles.axes3)
-set(handles.axes3,'visible','off')
+handles.data.Ctrl.Fitting=0;
+guidata(hObject,handles); 
+
 
 
 % --- Executes during object creation, after setting all properties.
@@ -775,6 +771,14 @@ function figure1_CreateFcn(hObject, eventdata, handles)
 % --- Executes on button press in pushbutton2.
 function pushbutton2_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+keyboard;
+
+
+% --- Executes on button press in pushbutton3.
+function pushbutton3_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 keyboard;
