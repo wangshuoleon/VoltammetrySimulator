@@ -26,7 +26,7 @@ figure
                legend('R','O','Y')
        end
        subplot(2,2,3)
-       plot(potential(1:i),i_profiles(1:i))
+       reverse_plot(potential(1:i),i_profiles(1:i))
        title(['E=',num2str(potential(i)),'V,i=',num2str(i_profiles(i)),'A/m^2'])
        xlabel('Potential (V)')
        ylabel('Current density A/m^2')
