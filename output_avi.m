@@ -13,7 +13,7 @@ figure
        subplot(2,2,1:2)
        plot(X,Y)
        title(['t=',num2str(t(i)),'s'])
-       xlabel('m')
+       xlabel('Distance relative to electrode m')
        ylabel('Concentration mmol/L')
        switch data.Ctrl.Mechanism
            case 'E'

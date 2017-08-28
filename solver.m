@@ -8,6 +8,8 @@ function [solution,i_profiles]=solver(ReactionParameters,ElectricalParameters,Ct
          [solution,i_profiles]=solver_ECE(ReactionParameters,ElectricalParameters,Ctrl,Const,x,t);
      case 'ECatalysis'
          [solution,i_profiles]=solver_ECatalysis(ReactionParameters,ElectricalParameters,Ctrl,Const,x,t);
+     case 'monod'
+         [solution,i_profiles]=solver_monod(ReactionParameters,ElectricalParameters,Ctrl,Const,x,t);
  end
  
  

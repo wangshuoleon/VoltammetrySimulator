@@ -22,7 +22,7 @@ function varargout = EC_simulator(varargin)
 
 % Edit the above text to modify the response to help EC_simulator
 
-% Last Modified by GUIDE v2.5 13-Feb-2017 11:42:26
+% Last Modified by GUIDE v2.5 28-Aug-2017 00:06:50
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -634,6 +634,7 @@ if Openpathname==0
 else
     cla(handles.axes2)
     axes(handles.axes2);
+    
    
     hold all
      
@@ -757,6 +758,7 @@ function clear_axes_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.data.Ctrl.Fitting=0;
+cla(handles.axis2)
 guidata(hObject,handles); 
 
 
@@ -768,17 +770,43 @@ function figure1_CreateFcn(hObject, eventdata, handles)
 % handles    empty - handles not created until after all CreateFcns called
 
 
-% --- Executes on button press in pushbutton2.
-function pushbutton2_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-keyboard;
 
 
-% --- Executes on button press in pushbutton3.
-function pushbutton3_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton3 (see GCBO)
+
+
+
+% --------------------------------------------------------------------
+function monod_Callback(hObject, eventdata, handles)
+% hObject    handle to monod (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-keyboard;
+axes(handles.axes1);
+imshow('pics\monod.jpg');
+set(handles.RP_panel,'title','Nernst Monod Parameters')
+monod_parameters;
+fields=fieldnames(monod);
+TableData=cell(length(fields),2);
+               for i=1:length(fields)
+                   TableData{i,1}=fields{i};
+                   TableData{i,2}=monod.(fields{i});
+               end
+set(handles.RP_table,'data',TableData);
+handles.data.ReactionParameters=monod;
+handles.data.Ctrl.Mechanism='monod';
+guidata(hObject,handles);
+
+
+% --------------------------------------------------------------------
+function Untitled_7_Callback(hObject, eventdata, handles)
+% hObject    handle to Untitled_7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+dynamical_concentration;
+
+
+% --- Executes on button press in pushbutton5.
+function pushbutton5_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+keyboard
