@@ -7,4 +7,3 @@ You may need to install the MCR, download here https://www.mathworks.com/support
 
 I have published an article about this simulator in 2017 for the Journal of Chemical Education. Now ACS makes this article （https://pubs.acs.org/doi/10.1021/acs.jchemed.6b00986） free to read, in the supporting information, there are many walkthroughs and examples, but for an older version. 
 
-（https://pubs.acs.org/cms/10.1021/acs.jchemed.6b00986/asset/images/large/ed-2016-00986j_0003.jpeg）
