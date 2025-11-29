@@ -56,17 +56,17 @@ load('E.mat');
        switch data.Ctrl.Mechanism
            case 'E'
                % show the E mechanism image in axes1
-               imshow('pics\E.jpg')
+               imshow('pics/E.jpg')
                % set the title of ReactionParameters panel
                set(handles.RP_panel,'Title','E Mechanism ReactionParameters');
            case 'EC'
-               imshow('pics\EC.jpg')
+               imshow('pics/EC.jpg')
                set(handles.RP_panel,'Title','EC Mechanism ReactionParameters');
            case 'ECE'
-               imshow('pics\ECE.jpg')
+               imshow('pics/ECE.jpg')
                set(handles.RP_panel,'Title','ECE Mechanism ReactionParameters');
            case 'ECatalysis'
-               imshow('pics\ECatalysis.jpg')
+               imshow('pics/ECatalysis.jpg')
                set(handles.RP_panel,'Title','ECatalysis Mechanism ReactionParameters');
        end
        switch data.Ctrl.Tech
@@ -194,17 +194,17 @@ else
        switch data.Ctrl.Mechanism
            case 'E'
                % show the E mechanism image in axes1
-               imshow('pics\E.jpg')
+               imshow('pics/E.jpg')
                % set the title of ReactionParameters panel
                set(handles.RP_panel,'Title','E Mechanism ReactionParameters');
            case 'EC'
-               imshow('pics\EC.jpg')
+               imshow('pics/EC.jpg')
                set(handles.RP_panel,'Title','EC Mechanism ReactionParameters');
            case 'ECE'
-               imshow('pics\ECE.jpg')
+               imshow('pics/ECE.jpg')
                set(handles.RP_panel,'Title','ECE Mechanism ReactionParameters');
            case 'ECatalysis'
-               imshow('pics\ECatalysis.jpg')
+               imshow('pics/ECatalysis.jpg')
                set(handles.RP_panel,'Title','ECatalysis Mechanism ReactionParameters');
        end
        switch data.Ctrl.Tech
@@ -471,7 +471,7 @@ function E_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 axes(handles.axes1);
-imshow('pics\E.jpg');
+imshow('pics/E.jpg');
 set(handles.RP_panel,'title','E Parameters')
 E_mechanism_parameters;
 fields=fieldnames(E);
@@ -493,7 +493,7 @@ function EC_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 axes(handles.axes1);
-imshow('pics\EC.jpg');
+imshow('pics/EC.jpg');
 set(handles.RP_panel,'title','EC Parameters')
 EC_mechanism_parameters;
 fields=fieldnames(EC);
@@ -514,7 +514,7 @@ function ECE_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 axes(handles.axes1);
-imshow('pics\ECE.jpg');
+imshow('pics/ECE.jpg');
 set(handles.RP_panel,'title','ECE Parameters')
 ECE_parameters;
 fields=fieldnames(ECE);
@@ -536,7 +536,7 @@ function ECatalysis_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 axes(handles.axes1);
-imshow('pics\ECatalysis.jpg');
+imshow('pics/ECatalysis.jpg');
 set(handles.RP_panel,'title','ECatalysis Parameters')
 ECatalysis_parameters;
 fields=fieldnames(ECatalysis);
@@ -781,7 +781,7 @@ function monod_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 axes(handles.axes1);
-imshow('pics\monod.jpg');
+imshow('pics/monod.jpg');
 set(handles.RP_panel,'title','Nernst Monod Parameters')
 monod_parameters;
 fields=fieldnames(monod);
